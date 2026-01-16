@@ -1,37 +1,75 @@
-import { type User, type InsertUser } from "@shared/schema";
 import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import type { JobPosting, InsertJobPosting, Experience, InsertExperience } from "@shared/schema";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  getJobPostings(): Promise<JobPosting[]>;
+  getJobPosting(id: string): Promise<JobPosting | undefined>;
+  createJobPosting(posting: InsertJobPosting): Promise<JobPosting>;
+  deleteJobPosting(id: string): Promise<boolean>;
+
+  getExperiences(): Promise<Experience[]>;
+  getExperience(id: string): Promise<Experience | undefined>;
+  createExperience(experience: Omit<InsertExperience, "extractedSkills"> & { extractedSkills: string[] }): Promise<Experience>;
+  deleteExperience(id: string): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private jobPostings: Map<string, JobPosting>;
+  private experiences: Map<string, Experience>;
 
   constructor() {
-    this.users = new Map();
+    this.jobPostings = new Map();
+    this.experiences = new Map();
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
+  async getJobPostings(): Promise<JobPosting[]> {
+    return Array.from(this.jobPostings.values()).sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async getJobPosting(id: string): Promise<JobPosting | undefined> {
+    return this.jobPostings.get(id);
+  }
+
+  async createJobPosting(insertPosting: InsertJobPosting): Promise<JobPosting> {
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    const posting: JobPosting = {
+      ...insertPosting,
+      id,
+      createdAt: new Date().toISOString(),
+    };
+    this.jobPostings.set(id, posting);
+    return posting;
+  }
+
+  async deleteJobPosting(id: string): Promise<boolean> {
+    return this.jobPostings.delete(id);
+  }
+
+  async getExperiences(): Promise<Experience[]> {
+    return Array.from(this.experiences.values()).sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }
+
+  async getExperience(id: string): Promise<Experience | undefined> {
+    return this.experiences.get(id);
+  }
+
+  async createExperience(insertExperience: Omit<InsertExperience, "extractedSkills"> & { extractedSkills: string[] }): Promise<Experience> {
+    const id = randomUUID();
+    const experience: Experience = {
+      ...insertExperience,
+      id,
+      createdAt: new Date().toISOString(),
+    };
+    this.experiences.set(id, experience);
+    return experience;
+  }
+
+  async deleteExperience(id: string): Promise<boolean> {
+    return this.experiences.delete(id);
   }
 }
 
