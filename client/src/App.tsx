@@ -32,21 +32,21 @@ function MainApp() {
 
       <main className="flex-1 container mx-auto px-4 py-6">
         <Tabs defaultValue="schedule" className="w-full">
-          <TabsList className="mb-6 w-full max-w-md mx-auto grid grid-cols-2">
+          <TabsList className="mb-6 w-full max-w-lg mx-auto grid grid-cols-2 h-14 bg-primary/10 p-1">
             <TabsTrigger
               value="schedule"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 text-lg font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground h-12"
               data-testid="tab-job-schedule"
             >
-              <Calendar className="h-4 w-4" />
+              <Calendar className="h-5 w-5" />
               채용 일정
             </TabsTrigger>
             <TabsTrigger
               value="matching"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 text-lg font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground h-12"
               data-testid="tab-resume-matching"
             >
-              <FileText className="h-4 w-4" />
+              <FileText className="h-5 w-5" />
               자소서 매칭
             </TabsTrigger>
           </TabsList>
