@@ -5,31 +5,30 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Calendar, FileText, Briefcase } from "lucide-react";
+import { Calendar, FileText } from "lucide-react";
 import JobSchedulePage from "@/pages/JobSchedulePage";
 import ResumeMatchingPage from "@/pages/ResumeMatchingPage";
 
 function MainApp() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-md bg-primary flex items-center justify-center">
-              <Briefcase className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold leading-tight" data-testid="text-app-title">
-                취준 매니저
-              </h1>
-              <p className="text-xs text-muted-foreground">
-                채용일정 & 자소서 통합 관리
-              </p>
-            </div>
-          </div>
+      <header className="border-b border-border/50 sticky top-0 z-50 bg-background/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-end">
           <ThemeToggle />
         </div>
       </header>
+
+      <section className="py-10 text-center">
+        <p className="text-lg text-muted-foreground mb-1" data-testid="text-subtitle">
+          여러분의 취업 비서
+        </p>
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-3" data-testid="text-app-title">
+          JOB FOR YOU
+        </h1>
+        <p className="text-sm text-muted-foreground" data-testid="text-description">
+          채용일정/자소서 매칭을 탭해보세요
+        </p>
+      </section>
 
       <main className="flex-1 container mx-auto px-4 py-6">
         <Tabs defaultValue="schedule" className="w-full">
@@ -62,9 +61,9 @@ function MainApp() {
         </Tabs>
       </main>
 
-      <footer className="border-t py-4">
+      <footer className="border-t border-border/50 py-4">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          취준 매니저 PoC - 채용 일정 자동 수집 & 자소서 경험 매칭
+          JOB FOR YOU - 채용 일정 자동 수집 & 자소서 경험 매칭
         </div>
       </footer>
     </div>
