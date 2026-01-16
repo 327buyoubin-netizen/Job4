@@ -353,7 +353,7 @@ END:VCALENDAR`;
                 {analyzeJobCategories(jobPostings).map((category, index) => (
                   <div
                     key={category.name}
-                    className="flex items-center gap-3 p-3 rounded-md bg-muted/50"
+                    className="flex items-center gap-3 p-3 rounded-md bg-sky-100 dark:bg-sky-900/30"
                     data-testid={`job-category-${index}`}
                   >
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-bold text-sm">
