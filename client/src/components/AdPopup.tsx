@@ -51,7 +51,7 @@ export function AdPopup({ delay = 5000 }: AdPopupProps) {
             <div className="text-center space-y-5">
               <div className="space-y-1">
                 <p className="text-lg text-yellow-300 font-bold">
-                  초특가 10분 안에 결제
+                  초특가 10분 안에 결제 시
                 </p>
               </div>
 
@@ -66,11 +66,11 @@ export function AdPopup({ delay = 5000 }: AdPopupProps) {
                 <span className="text-3xl text-yellow-300 font-bold">32,000원</span>
               </div>
 
-              <div className="space-y-2 text-white">
-                <p className="text-base">
+              <div className="space-y-2">
+                <p className="text-xl text-red-400 font-bold">
                   수익모델 겸 재미로 만든 광고입니다
                 </p>
-                <p className="text-sm text-white/80">
+                <p className="text-xl text-red-400 font-bold">
                   한양대 빠이팅 즐거운 겨울방학 보내세요~
                 </p>
               </div>
