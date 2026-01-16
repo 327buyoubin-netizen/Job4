@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +18,7 @@ import type { Experience, MatchResult } from "@shared/schema";
 export default function ResumeMatchingPage() {
   const { toast } = useToast();
   const [question, setQuestion] = useState("");
+  const [charLimit, setCharLimit] = useState("");
   const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
   const [draft, setDraft] = useState("");
 
@@ -194,6 +196,17 @@ export default function ResumeMatchingPage() {
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 data-testid="input-resume-question"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>글자수 제한 (선택)</Label>
+              <Input
+                type="number"
+                placeholder="예: 500"
+                value={charLimit}
+                onChange={(e) => setCharLimit(e.target.value)}
+                data-testid="input-char-limit"
               />
             </div>
 
