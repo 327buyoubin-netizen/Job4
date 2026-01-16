@@ -311,7 +311,7 @@ export default function ResumeMatchingPage() {
               <CardTitle className="text-lg">추천 보완 사항</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-3 bg-white dark:bg-background border-2 border-sky-500 rounded-md">
+              <div className="p-3 bg-white dark:bg-background border-2 border-blue-600 rounded-md">
                 <p className="text-sm">
                   <span className="font-medium">"{keywords}"</span>에 대해 더 자세히 작성해주시면 자소서를 개선하는데 도움이 됩니다.
                 </p>
@@ -359,7 +359,7 @@ export default function ResumeMatchingPage() {
             </CardHeader>
             <CardContent>
               <div
-                className="p-4 bg-white dark:bg-background border-2 border-sky-500 rounded-md text-sm leading-relaxed whitespace-pre-wrap"
+                className="p-4 bg-white dark:bg-background border-2 border-blue-600 rounded-md text-sm leading-relaxed whitespace-pre-wrap"
                 data-testid="text-improved-draft"
               >
                 {improvedDraft}
