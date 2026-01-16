@@ -166,6 +166,9 @@ END:VCALENDAR`;
               <LinkIcon className="h-5 w-5 text-primary" />
               채용 공고 입력
             </CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              관심있는 기업 공고를 최대 5개 입력하시면 자동으로 캘린더에 일정이 추가됩니다
+            </p>
           </CardHeader>
           <CardContent className="space-y-4">
             <Tabs value={inputMode} onValueChange={(v) => setInputMode(v as "url" | "manual")}>
