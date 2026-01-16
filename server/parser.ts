@@ -234,9 +234,16 @@ export function extractSkillsFromExperience(
 
 export function matchExperienceToQuestion(
   question: string,
-  experiences: Array<{ tags: string[]; extractedSkills: string[] }>
+  experiences: Array<{ tags: string[]; extractedSkills: string[] }>,
+  keywords?: string
 ): Array<{ index: number; score: number; matchedKeywords: string[] }> {
   const questionKeywords = extractKeywordsFromQuestion(question);
+  
+  const userKeywords = keywords
+    ? keywords.split(/[,，\s]+/).map(k => k.trim().toLowerCase()).filter(k => k.length > 0)
+    : [];
+  
+  const allSearchKeywords = [...questionKeywords, ...userKeywords];
 
   const results = experiences.map((exp, index) => {
     const expKeywords = [
@@ -246,7 +253,7 @@ export function matchExperienceToQuestion(
 
     const matchedKeywords: string[] = [];
 
-    for (const qk of questionKeywords) {
+    for (const qk of allSearchKeywords) {
       for (const ek of expKeywords) {
         if (ek.includes(qk) || qk.includes(ek)) {
           matchedKeywords.push(ek);
@@ -257,7 +264,7 @@ export function matchExperienceToQuestion(
     const uniqueMatches = Array.from(new Set(matchedKeywords));
     const score = Math.min(
       100,
-      Math.round((uniqueMatches.length / (questionKeywords.length + 1)) * 100) + 
+      Math.round((uniqueMatches.length / (allSearchKeywords.length + 1)) * 100) + 
       Math.min(30, uniqueMatches.length * 15)
     );
 

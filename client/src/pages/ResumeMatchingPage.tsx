@@ -80,9 +80,10 @@ export default function ResumeMatchingPage() {
   });
 
   const matchMutation = useMutation({
-    mutationFn: async (questionText: string) => {
+    mutationFn: async ({ questionText, keywordsText }: { questionText: string; keywordsText: string }) => {
       const response = await apiRequest("POST", "/api/match-experiences", {
         question: questionText,
+        keywords: keywordsText,
       });
       return response.json();
     },
@@ -128,7 +129,7 @@ export default function ResumeMatchingPage() {
       });
       return;
     }
-    matchMutation.mutate(question);
+    matchMutation.mutate({ questionText: question, keywordsText: keywords });
   };
 
   return (

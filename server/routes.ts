@@ -243,7 +243,7 @@ export async function registerRoutes(
 
   app.post("/api/match-experiences", async (req, res) => {
     try {
-      const { question } = req.body;
+      const { question, keywords } = req.body;
       if (!question) {
         return res.status(400).json({ error: "Question is required" });
       }
@@ -253,7 +253,7 @@ export async function registerRoutes(
         return res.json({ matches: [], draft: "" });
       }
 
-      const matchResults = matchExperienceToQuestion(question, experiences);
+      const matchResults = matchExperienceToQuestion(question, experiences, keywords);
       const top3 = matchResults.slice(0, 3);
 
       const matches = top3.map((result) => ({
