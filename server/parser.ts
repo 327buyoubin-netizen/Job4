@@ -138,7 +138,7 @@ export function extractSkillsFromExperience(
     }
   }
 
-  return [...new Set(foundSkills)];
+  return Array.from(new Set(foundSkills));
 }
 
 export function matchExperienceToQuestion(
@@ -163,7 +163,7 @@ export function matchExperienceToQuestion(
       }
     }
 
-    const uniqueMatches = [...new Set(matchedKeywords)];
+    const uniqueMatches = Array.from(new Set(matchedKeywords));
     const score = Math.min(
       100,
       Math.round((uniqueMatches.length / (questionKeywords.length + 1)) * 100) + 
@@ -189,7 +189,7 @@ function extractKeywordsFromQuestion(question: string): string[] {
     .split(/\s+/)
     .filter((w) => w.length > 1 && !stopWords.includes(w));
 
-  return [...new Set(words)];
+  return Array.from(new Set(words));
 }
 
 export function generateDraft(
