@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import introImage from "@assets/stock_images/professional_office__e8ceca1f.jpg";
+import introImage from "@assets/stock_images/modern_glass_skyscra_d50ecf57.jpg";
 
 interface IntroScreenProps {
   onEnter: () => void;
