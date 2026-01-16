@@ -364,7 +364,7 @@ END:VCALENDAR`;
                         <span className="font-medium">{category.name}</span>
                         <Badge variant="secondary">{category.count}개</Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground truncate">
+                      <p className="text-xs text-card-foreground truncate">
                         {category.companies.join(", ")}
                       </p>
                     </div>
