@@ -25,8 +25,8 @@ function MainApp() {
         <h1 className="text-6xl md:text-7xl font-bold text-foreground tracking-tight mb-4" data-testid="text-app-title">
           JOB FOR YOU
         </h1>
-        <p className="text-lg text-muted-foreground" data-testid="text-description">
-          채용일정/자소서 매칭을 탭해보세요
+        <p className="text-lg text-muted-foreground font-bold" data-testid="text-description">
+          채용일정 또는 자소서 매칭을 탭해보세요
         </p>
       </section>
 
