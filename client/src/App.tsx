@@ -19,13 +19,13 @@ function MainApp() {
       </header>
 
       <section className="py-10 text-center">
-        <p className="text-xl text-muted-foreground mb-1" data-testid="text-subtitle">
+        <p className="text-2xl text-muted-foreground mb-2" data-testid="text-subtitle">
           여러분의 취업 비서
         </p>
-        <h1 className="text-5xl md:text-6xl font-bold text-foreground tracking-tight mb-3" data-testid="text-app-title">
+        <h1 className="text-6xl md:text-7xl font-bold text-foreground tracking-tight mb-4" data-testid="text-app-title">
           JOB FOR YOU
         </h1>
-        <p className="text-base text-muted-foreground" data-testid="text-description">
+        <p className="text-lg text-muted-foreground" data-testid="text-description">
           채용일정/자소서 매칭을 탭해보세요
         </p>
       </section>
