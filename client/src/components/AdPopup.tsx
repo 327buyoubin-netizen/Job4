@@ -50,7 +50,7 @@ export function AdPopup({ delay = 5000 }: AdPopupProps) {
 
             <div className="text-center space-y-5">
               <div className="space-y-1">
-                <p className="text-lg text-yellow-300 font-bold">
+                <p className="text-2xl text-yellow-300 font-bold">
                   초특가 10분 안에 결제 시
                 </p>
               </div>
