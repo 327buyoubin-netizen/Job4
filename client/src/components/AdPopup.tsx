@@ -71,7 +71,10 @@ export function AdPopup({ delay = 5000 }: AdPopupProps) {
                   수익모델 겸 재미로 만든 광고입니다
                 </p>
                 <p className="text-xl text-red-500 font-bold">
-                  한양대 빠이팅 즐거운 겨울방학 보내세요~
+                  이틀 간의 교육 수고하셨습니다~
+                </p>
+                <p className="text-xl text-red-500 font-bold">
+                  즐거운 겨울방학 보내세요~
                 </p>
               </div>
             </div>
