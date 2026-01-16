@@ -11,6 +11,7 @@ import { AnimatePresence } from "framer-motion";
 import JobSchedulePage from "@/pages/JobSchedulePage";
 import ResumeMatchingPage from "@/pages/ResumeMatchingPage";
 import { IntroScreen } from "@/components/IntroScreen";
+import { AdPopup } from "@/components/AdPopup";
 
 function MainApp() {
   return (
@@ -91,7 +92,12 @@ function App() {
         <AnimatePresence>
           {showIntro && <IntroScreen onEnter={() => setShowIntro(false)} />}
         </AnimatePresence>
-        {!showIntro && <Router />}
+        {!showIntro && (
+          <>
+            <Router />
+            <AdPopup delay={15000} />
+          </>
+        )}
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
