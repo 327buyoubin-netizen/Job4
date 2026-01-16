@@ -243,7 +243,7 @@ export async function registerRoutes(
 
   app.post("/api/match-experiences", async (req, res) => {
     try {
-      const { question, keywords } = req.body;
+      const { question, keywords, charLimit } = req.body;
       if (!question) {
         return res.status(400).json({ error: "Question is required" });
       }
@@ -265,7 +265,7 @@ export async function registerRoutes(
       let draft = "";
       if (matches.length > 0) {
         const topExperience = matches[0].experience;
-        draft = generateDraft(question, topExperience);
+        draft = generateDraft(question, topExperience, charLimit);
       }
 
       res.json({ matches, draft });

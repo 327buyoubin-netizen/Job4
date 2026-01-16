@@ -80,10 +80,11 @@ export default function ResumeMatchingPage() {
   });
 
   const matchMutation = useMutation({
-    mutationFn: async ({ questionText, keywordsText }: { questionText: string; keywordsText: string }) => {
+    mutationFn: async ({ questionText, keywordsText, charLimitValue }: { questionText: string; keywordsText: string; charLimitValue: string }) => {
       const response = await apiRequest("POST", "/api/match-experiences", {
         question: questionText,
         keywords: keywordsText,
+        charLimit: charLimitValue ? parseInt(charLimitValue) : undefined,
       });
       return response.json();
     },
@@ -129,7 +130,7 @@ export default function ResumeMatchingPage() {
       });
       return;
     }
-    matchMutation.mutate({ questionText: question, keywordsText: keywords });
+    matchMutation.mutate({ questionText: question, keywordsText: keywords, charLimitValue: charLimit });
   };
 
   return (
@@ -285,7 +286,7 @@ export default function ResumeMatchingPage() {
 
       <div className="space-y-4">
         {draft ? (
-          <DraftPreview draft={draft} question={question} />
+          <DraftPreview draft={draft} question={question} charLimit={charLimit ? parseInt(charLimit) : undefined} />
         ) : (
           <Card>
             <CardHeader className="pb-3">

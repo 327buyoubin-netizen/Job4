@@ -6,9 +6,10 @@ import { useState } from "react";
 interface DraftPreviewProps {
   draft: string;
   question: string;
+  charLimit?: number;
 }
 
-export function DraftPreview({ draft, question }: DraftPreviewProps) {
+export function DraftPreview({ draft, question, charLimit }: DraftPreviewProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -49,6 +50,14 @@ export function DraftPreview({ draft, question }: DraftPreviewProps) {
           data-testid="text-draft-content"
         >
           {draft}
+        </div>
+        <div className="mt-3 flex items-center justify-end gap-2 text-sm">
+          <span className={charLimit && draft.length > charLimit ? "text-red-500 font-medium" : "text-muted-foreground"}>
+            {draft.length}자
+          </span>
+          {charLimit && (
+            <span className="text-muted-foreground">/ {charLimit}자</span>
+          )}
         </div>
       </CardContent>
     </Card>

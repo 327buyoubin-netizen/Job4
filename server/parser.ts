@@ -299,7 +299,8 @@ export function generateDraft(
     actions: string[];
     results: string;
     tags: string[];
-  }
+  },
+  charLimit?: number
 ): string {
   const intro = `저는 ${experience.title} 경험을 통해 ${experience.tags.slice(0, 2).join(", ")} 역량을 기를 수 있었습니다.`;
   
@@ -316,5 +317,24 @@ export function generateDraft(
   
   const conclusion = `이 경험을 통해 ${experience.tags[0] || "협업"}의 중요성을 배웠으며, 이를 바탕으로 귀사에서도 기여하고 싶습니다.`;
 
-  return `${intro}\n\n${body}\n\n${result}\n\n${conclusion}`;
+  let fullDraft = `${intro}\n\n${body}\n\n${result}\n\n${conclusion}`;
+
+  if (charLimit && fullDraft.length > charLimit) {
+    const shortBody = experience.actions
+      .slice(0, 2)
+      .map((action, i) => {
+        if (i === 0) return `${experience.role}로서 ${action}을 담당했습니다.`;
+        return `또한, ${action}을 수행했습니다.`;
+      })
+      .join(" ");
+    
+    const shortConclusion = `이 경험을 바탕으로 귀사에 기여하겠습니다.`;
+    fullDraft = `${intro}\n\n${shortBody}\n\n${result}\n\n${shortConclusion}`;
+    
+    if (fullDraft.length > charLimit) {
+      fullDraft = fullDraft.substring(0, charLimit - 3) + "...";
+    }
+  }
+
+  return fullDraft;
 }
