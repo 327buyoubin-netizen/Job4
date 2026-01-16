@@ -18,6 +18,7 @@ import type { Experience, MatchResult } from "@shared/schema";
 export default function ResumeMatchingPage() {
   const { toast } = useToast();
   const [question, setQuestion] = useState("");
+  const [keywords, setKeywords] = useState("");
   const [charLimit, setCharLimit] = useState("");
   const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
   const [draft, setDraft] = useState("");
@@ -196,6 +197,16 @@ export default function ResumeMatchingPage() {
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 data-testid="input-resume-question"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>핵심 역량 키워드 (선택)</Label>
+              <Input
+                placeholder="예: 리더십, 협업, 커뮤니케이션, 마케팅"
+                value={keywords}
+                onChange={(e) => setKeywords(e.target.value)}
+                data-testid="input-keywords"
               />
             </div>
 
