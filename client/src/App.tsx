@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -6,8 +7,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Calendar, FileText } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 import JobSchedulePage from "@/pages/JobSchedulePage";
 import ResumeMatchingPage from "@/pages/ResumeMatchingPage";
+import { IntroScreen } from "@/components/IntroScreen";
 
 function MainApp() {
   return (
@@ -80,11 +83,16 @@ function Router() {
 }
 
 function App() {
+  const [showIntro, setShowIntro] = useState(true);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <AnimatePresence>
+          {showIntro && <IntroScreen onEnter={() => setShowIntro(false)} />}
+        </AnimatePresence>
+        {!showIntro && <Router />}
         <Toaster />
-        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );
