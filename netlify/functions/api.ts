@@ -11,6 +11,106 @@ app.use(express.json());
 const jobPostings: Map<string, JobPosting> = new Map();
 const experiences: Map<string, Experience> = new Map();
 
+function initializeSampleData() {
+  if (jobPostings.size === 0) {
+    const sampleJobs = [
+      {
+        company: "네이버",
+        title: "2026 신입 개발자 공개채용",
+        positions: ["프론트엔드 개발", "백엔드 개발", "AI/ML", "데이터 분석", "PM/기획"],
+        startDate: "2026-01-10",
+        endDate: "2026-01-31",
+        url: "https://recruit.navercorp.com",
+      },
+      {
+        company: "카카오",
+        title: "2026 상반기 경력 개발자 모집",
+        positions: ["백엔드 개발", "iOS 개발", "Android 개발", "DevOps/인프라"],
+        startDate: "2026-01-15",
+        endDate: "2026-02-15",
+        url: "https://careers.kakao.com",
+      },
+      {
+        company: "삼성전자",
+        title: "2026년 상반기 신입사원 모집",
+        positions: ["마케팅", "영업/세일즈", "인사/HR", "재무/회계", "QA/테스트"],
+        startDate: "2026-01-20",
+        endDate: "2026-02-28",
+        url: "https://www.samsung.com/sec/careers/",
+      },
+    ];
+
+    for (const job of sampleJobs) {
+      const id = randomUUID();
+      const posting: JobPosting = {
+        ...job,
+        id,
+        createdAt: new Date().toISOString(),
+      };
+      jobPostings.set(id, posting);
+    }
+  }
+
+  if (experiences.size === 0) {
+    const sampleExperiences = [
+      {
+        title: "대학 동아리 프로젝트 리더",
+        role: "팀장",
+        period: "2024.03 - 2024.12",
+        actions: [
+          "10명 규모 팀의 역할 분담 및 일정 관리",
+          "주간 회의 진행 및 회의록 작성",
+          "외부 협력사와의 커뮤니케이션 담당",
+        ],
+        results: "프로젝트 기한 내 100% 완료, 팀원 만족도 95% 달성",
+        tags: ["리더십", "프로젝트관리", "커뮤니케이션", "협업"],
+      },
+      {
+        title: "스타트업 마케팅 인턴",
+        role: "마케팅 인턴",
+        period: "2025.01 - 2025.06",
+        actions: [
+          "SNS 콘텐츠 기획 및 제작 (월 30건)",
+          "광고 성과 데이터 분석 및 리포트 작성",
+          "신규 캠페인 아이디어 제안 및 실행",
+        ],
+        results: "팔로워 30% 증가, 광고 클릭률 2배 향상",
+        tags: ["마케팅", "데이터분석", "창의성", "콘텐츠기획"],
+      },
+      {
+        title: "학술 연구 프로젝트 참여",
+        role: "연구 보조원",
+        period: "2024.09 - 2025.02",
+        actions: [
+          "문헌 조사 및 선행 연구 분석",
+          "데이터 수집 및 통계 분석 수행",
+          "연구 결과 보고서 작성 보조",
+        ],
+        results: "학술대회 발표 논문 공동 저자로 등재",
+        tags: ["연구", "분석", "문서작성", "꼼꼼함"],
+      },
+    ];
+
+    for (const exp of sampleExperiences) {
+      const extractedSkills = extractSkillsFromExperience(
+        exp.actions,
+        exp.results,
+        exp.tags
+      );
+      const id = randomUUID();
+      const experience: Experience = {
+        ...exp,
+        id,
+        extractedSkills,
+        createdAt: new Date().toISOString(),
+      };
+      experiences.set(id, experience);
+    }
+  }
+}
+
+initializeSampleData();
+
 app.get("/api/job-postings", (_req, res) => {
   const postings = Array.from(jobPostings.values()).sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -270,7 +370,7 @@ app.post("/api/load-sample-experiences", (_req, res) => {
 
 app.post("/api/match-experiences", (req, res) => {
   try {
-    const { question } = req.body;
+    const { question, keywords, charLimit } = req.body;
     if (!question) {
       return res.status(400).json({ error: "Question is required" });
     }
@@ -280,7 +380,7 @@ app.post("/api/match-experiences", (req, res) => {
       return res.json({ matches: [], draft: "" });
     }
 
-    const matchResults = matchExperienceToQuestion(question, allExperiences);
+    const matchResults = matchExperienceToQuestion(question, allExperiences, keywords);
     const top3 = matchResults.slice(0, 3);
 
     const matches = top3.map((result) => ({
@@ -292,7 +392,7 @@ app.post("/api/match-experiences", (req, res) => {
     let draft = "";
     if (matches.length > 0) {
       const topExperience = matches[0].experience;
-      draft = generateDraft(question, topExperience);
+      draft = generateDraft(question, topExperience, charLimit);
     }
 
     res.json({ matches, draft });
