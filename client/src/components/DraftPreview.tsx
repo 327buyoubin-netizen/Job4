@@ -46,7 +46,7 @@ export function DraftPreview({ draft, question, charLimit }: DraftPreviewProps) 
       </CardHeader>
       <CardContent>
         <div
-          className="p-4 bg-white dark:bg-background border-2 border-blue-600 rounded-md text-sm leading-relaxed whitespace-pre-wrap"
+          className="p-4 bg-white dark:bg-background border border-blue-600 rounded-md text-sm leading-relaxed whitespace-pre-wrap"
           data-testid="text-draft-content"
         >
           {draft}
