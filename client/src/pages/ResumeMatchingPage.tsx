@@ -22,6 +22,8 @@ export default function ResumeMatchingPage() {
   const [charLimit, setCharLimit] = useState("");
   const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
   const [draft, setDraft] = useState("");
+  const [additionalDetail, setAdditionalDetail] = useState("");
+  const [improvedDraft, setImprovedDraft] = useState("");
 
   const { data: experiences = [], isLoading } = useQuery<Experience[]>({
     queryKey: ["/api/experiences"],
@@ -298,6 +300,73 @@ export default function ResumeMatchingPage() {
                 <p className="text-sm">자소서 문항을 입력하고</p>
                 <p className="text-sm">"자동 매칭"을 클릭하면</p>
                 <p className="text-sm">초안이 생성됩니다</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {draft && keywords && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">추천 보완 사항</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-3 bg-sky-100 dark:bg-sky-900/30 rounded-md">
+                <p className="text-sm">
+                  <span className="font-medium">"{keywords}"</span>에 대해 더 자세히 작성해주시면 자소서를 개선하는데 도움이 됩니다.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label>추가 내용 작성</Label>
+                <Textarea
+                  placeholder="예: 팀 프로젝트에서 의견 충돌 시 양측의 입장을 경청하고 절충안을 제시하여 합의를 이끌어냈습니다..."
+                  rows={4}
+                  value={additionalDetail}
+                  onChange={(e) => setAdditionalDetail(e.target.value)}
+                  data-testid="input-additional-detail"
+                />
+              </div>
+              <Button
+                onClick={() => {
+                  if (additionalDetail.trim()) {
+                    const improved = draft + "\n\n[보완 내용]\n" + additionalDetail;
+                    setImprovedDraft(improved);
+                    toast({
+                      title: "보완 완료",
+                      description: "추가 내용이 반영된 자소서가 생성되었습니다.",
+                    });
+                  }
+                }}
+                disabled={!additionalDetail.trim()}
+                className="w-full"
+                data-testid="button-apply-improvement"
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                보완 내용 적용
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {improvedDraft && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">수정된 자소서</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="p-4 bg-muted/50 rounded-md text-sm leading-relaxed whitespace-pre-wrap"
+                data-testid="text-improved-draft"
+              >
+                {improvedDraft}
+              </div>
+              <div className="mt-3 flex items-center justify-end gap-2 text-sm">
+                <span className={charLimit && improvedDraft.length > parseInt(charLimit) ? "text-red-500 font-medium" : "text-muted-foreground"}>
+                  {improvedDraft.length}자
+                </span>
+                {charLimit && (
+                  <span className="text-muted-foreground">/ {charLimit}자</span>
+                )}
               </div>
             </CardContent>
           </Card>
