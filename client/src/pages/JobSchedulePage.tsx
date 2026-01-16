@@ -10,8 +10,67 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar } from "@/components/Calendar";
 import { JobPostingTable } from "@/components/JobPostingTable";
-import { Loader2, Plus, Trash2, Download, Database, Link as LinkIcon } from "lucide-react";
+import { Loader2, Plus, Trash2, Download, Database, Link as LinkIcon, BarChart3 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import type { JobPosting } from "@shared/schema";
+
+interface JobCategory {
+  name: string;
+  keywords: string[];
+  count: number;
+  companies: string[];
+}
+
+function analyzeJobCategories(postings: JobPosting[]): JobCategory[] {
+  const categoryDefs: { name: string; keywords: string[] }[] = [
+    { name: "개발/IT", keywords: ["개발", "developer", "engineer", "프론트엔드", "백엔드", "풀스택", "소프트웨어", "IT", "프로그래머", "SW"] },
+    { name: "마케팅", keywords: ["마케팅", "marketing", "광고", "브랜드", "SNS", "콘텐츠", "홍보", "PR"] },
+    { name: "디자인", keywords: ["디자인", "design", "UI", "UX", "그래픽", "웹디자인", "영상"] },
+    { name: "기획/PM", keywords: ["기획", "PM", "프로젝트", "매니저", "product", "서비스기획", "전략"] },
+    { name: "데이터/AI", keywords: ["데이터", "data", "AI", "머신러닝", "분석", "analyst", "scientist"] },
+    { name: "영업/세일즈", keywords: ["영업", "세일즈", "sales", "B2B", "B2C", "어카운트"] },
+    { name: "인사/HR", keywords: ["인사", "HR", "채용", "인재", "조직문화", "교육"] },
+    { name: "재무/회계", keywords: ["재무", "회계", "finance", "경리", "세무", "감사"] },
+    { name: "기타", keywords: [] },
+  ];
+
+  const results: JobCategory[] = categoryDefs.map((def) => ({
+    name: def.name,
+    keywords: def.keywords,
+    count: 0,
+    companies: [],
+  }));
+
+  for (const posting of postings) {
+    const text = `${posting.title} ${posting.company}`.toLowerCase();
+    let matched = false;
+
+    for (const category of results) {
+      if (category.name === "기타") continue;
+      for (const keyword of category.keywords) {
+        if (text.includes(keyword.toLowerCase())) {
+          category.count++;
+          if (!category.companies.includes(posting.company)) {
+            category.companies.push(posting.company);
+          }
+          matched = true;
+          break;
+        }
+      }
+      if (matched) break;
+    }
+
+    if (!matched) {
+      const etcCategory = results.find((c) => c.name === "기타")!;
+      etcCategory.count++;
+      if (!etcCategory.companies.includes(posting.company)) {
+        etcCategory.companies.push(posting.company);
+      }
+    }
+  }
+
+  return results.filter((c) => c.count > 0).sort((a, b) => b.count - a.count);
+}
 
 export default function JobSchedulePage() {
   const { toast } = useToast();
@@ -262,6 +321,48 @@ END:VCALENDAR`;
                 ICS 다운로드
               </Button>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-primary" />
+              공고 분석
+            </CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              지원한 직무를 분석하여 관심 분야를 파악합니다
+            </p>
+          </CardHeader>
+          <CardContent>
+            {jobPostings.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-4">
+                공고를 추가하면 직무 분석 결과가 표시됩니다
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {analyzeJobCategories(jobPostings).map((category, index) => (
+                  <div
+                    key={category.name}
+                    className="flex items-center gap-3 p-3 rounded-md bg-muted/50"
+                    data-testid={`job-category-${index}`}
+                  >
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-bold text-sm">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium">{category.name}</span>
+                        <Badge variant="secondary">{category.count}개</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {category.companies.join(", ")}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
