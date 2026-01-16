@@ -359,7 +359,7 @@ export default function ResumeMatchingPage() {
             </CardHeader>
             <CardContent>
               <div
-                className="p-4 bg-muted/50 rounded-md text-sm leading-relaxed whitespace-pre-wrap"
+                className="p-4 bg-sky-100 dark:bg-sky-900/30 rounded-md text-sm leading-relaxed whitespace-pre-wrap"
                 data-testid="text-improved-draft"
               >
                 {improvedDraft}
