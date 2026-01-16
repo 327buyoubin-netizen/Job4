@@ -234,8 +234,6 @@ END:VCALENDAR`;
             </CardTitle>
             <p className="text-sm text-card-foreground mt-1">
               관심있는 기업 공고를 입력하시면 자동으로 캘린더에 일정이 추가됩니다.
-              <br />
-              테스트를 희망하시면 샘플로드를 탭해주세요.
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
