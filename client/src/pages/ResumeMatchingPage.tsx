@@ -189,7 +189,7 @@ export default function ResumeMatchingPage() {
             <div className="space-y-2">
               <Label>자소서 문항</Label>
               <Textarea
-                placeholder="예: 팀 프로젝트에서 갈등 상황을 어떻게 해결했는지 경험을 작성해 주세요."
+                placeholder="예: 품질직무에 필요한 데이터 분석 역량 경험을 기술해주세요"
                 rows={4}
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
