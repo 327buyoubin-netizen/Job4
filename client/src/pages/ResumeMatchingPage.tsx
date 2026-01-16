@@ -218,36 +218,44 @@ export default function ResumeMatchingPage() {
           </CardContent>
         </Card>
 
-        {matchResults.length > 0 && (
-          <>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">매칭 점수 차트</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <MatchScoreChart results={matchResults} />
-              </CardContent>
-            </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">매칭 점수 차트</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {matchResults.length > 0 ? (
+              <MatchScoreChart results={matchResults} />
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <p className="text-sm">자동 매칭 후 점수 차트가 표시됩니다</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Top 3 매칭 결과</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {matchResults.map((result, index) => (
-                    <MatchResultCard
-                      key={result.experience.id}
-                      result={result}
-                      rank={index + 1}
-                      isTop={index === 0}
-                    />
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </>
-        )}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Top 3 매칭 결과</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {matchResults.length > 0 ? (
+              <div className="space-y-4">
+                {matchResults.map((result, index) => (
+                  <MatchResultCard
+                    key={result.experience.id}
+                    result={result}
+                    rank={index + 1}
+                    isTop={index === 0}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <p className="text-sm">자동 매칭 후 결과가 표시됩니다</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       <div className="space-y-4">
