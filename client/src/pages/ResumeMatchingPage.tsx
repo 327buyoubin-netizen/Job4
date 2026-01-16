@@ -329,7 +329,11 @@ export default function ResumeMatchingPage() {
               <Button
                 onClick={() => {
                   if (additionalDetail.trim()) {
-                    const improved = draft + "\n\n[보완 내용]\n" + additionalDetail;
+                    const paragraphs = draft.split("\n\n");
+                    const insertIndex = Math.max(1, paragraphs.length - 1);
+                    const additionalParagraph = `또한, ${additionalDetail.trim()}`;
+                    paragraphs.splice(insertIndex, 0, additionalParagraph);
+                    const improved = paragraphs.join("\n\n");
                     setImprovedDraft(improved);
                     toast({
                       title: "보완 완료",

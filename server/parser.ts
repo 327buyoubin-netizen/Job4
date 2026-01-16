@@ -302,34 +302,41 @@ export function generateDraft(
   },
   charLimit?: number
 ): string {
-  const intro = `저는 ${experience.title} 경험을 통해 ${experience.tags.slice(0, 2).join(", ")} 역량을 기를 수 있었습니다.`;
+  const mainSkill = experience.tags[0] || "협업";
+  const secondSkill = experience.tags[1] || "문제해결";
   
-  const body = experience.actions
-    .slice(0, 3)
-    .map((action, i) => {
-      if (i === 0) return `당시 ${experience.role}로서 ${action}을 담당했습니다.`;
-      if (i === 1) return `또한, ${action}을 수행하며 책임감을 발휘했습니다.`;
-      return `이 과정에서 ${action}의 중요성을 깨달았습니다.`;
-    })
-    .join(" ");
+  const intro = `저는 '${experience.title}' 경험을 통해 ${mainSkill}과 ${secondSkill} 역량을 키울 수 있었습니다. ${experience.period} 동안 ${experience.role}로 활동하며 다양한 도전과 성장의 기회를 얻었습니다.`;
+  
+  const actions = experience.actions;
+  let body = "";
+  
+  if (actions.length >= 1) {
+    body += `가장 먼저 ${actions[0]}에 집중했습니다. `;
+  }
+  if (actions.length >= 2) {
+    body += `이와 함께 ${actions[1]}도 병행하며 업무 효율성을 높이고자 노력했습니다. `;
+  }
+  if (actions.length >= 3) {
+    body += `특히 ${actions[2]}을 통해 팀 전체의 성과 향상에 기여할 수 있었습니다.`;
+  }
 
-  const result = `그 결과, ${experience.results}`;
+  const result = `이러한 노력의 결과, ${experience.results}라는 성과를 달성할 수 있었습니다. 이 과정에서 ${mainSkill}의 중요성을 깊이 체감했으며, 어려운 상황에서도 포기하지 않는 끈기를 기를 수 있었습니다.`;
   
-  const conclusion = `이 경험을 통해 ${experience.tags[0] || "협업"}의 중요성을 배웠으며, 이를 바탕으로 귀사에서도 기여하고 싶습니다.`;
+  const conclusion = `이 경험을 바탕으로 귀사에서도 ${mainSkill}과 ${secondSkill}을 발휘하여 조직의 목표 달성에 기여하는 인재가 되겠습니다. 항상 배우는 자세로 성장하며, 맡은 업무에 책임감을 가지고 최선을 다하겠습니다.`;
 
   let fullDraft = `${intro}\n\n${body}\n\n${result}\n\n${conclusion}`;
 
   if (charLimit && fullDraft.length > charLimit) {
-    const shortBody = experience.actions
-      .slice(0, 2)
-      .map((action, i) => {
-        if (i === 0) return `${experience.role}로서 ${action}을 담당했습니다.`;
-        return `또한, ${action}을 수행했습니다.`;
-      })
-      .join(" ");
+    const shortIntro = `저는 '${experience.title}' 경험을 통해 ${mainSkill} 역량을 키웠습니다.`;
     
-    const shortConclusion = `이 경험을 바탕으로 귀사에 기여하겠습니다.`;
-    fullDraft = `${intro}\n\n${shortBody}\n\n${result}\n\n${shortConclusion}`;
+    const shortBody = actions.length >= 1 
+      ? `${experience.role}로서 ${actions[0]}에 집중했으며, ${actions[1] ? actions[1] + "도 수행했습니다." : ""}`
+      : "";
+    
+    const shortResult = `그 결과, ${experience.results}라는 성과를 얻었습니다.`;
+    const shortConclusion = `이 경험을 바탕으로 귀사에서 ${mainSkill}을 발휘하여 기여하겠습니다.`;
+    
+    fullDraft = `${shortIntro}\n\n${shortBody}\n\n${shortResult}\n\n${shortConclusion}`;
     
     if (fullDraft.length > charLimit) {
       fullDraft = fullDraft.substring(0, charLimit - 3) + "...";
