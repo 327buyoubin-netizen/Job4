@@ -95,7 +95,7 @@ function App() {
         {!showIntro && (
           <>
             <Router />
-            <AdPopup delay={3000} />
+            <AdPopup delay={2000} />
           </>
         )}
         <Toaster />
