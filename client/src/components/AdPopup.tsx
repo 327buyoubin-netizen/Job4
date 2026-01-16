@@ -74,14 +74,6 @@ export function AdPopup({ delay = 5000 }: AdPopupProps) {
                   한양대 빠이팅 즐거운 겨울방학 보내세요~
                 </p>
               </div>
-
-              <button
-                className="w-full py-4 bg-yellow-400 text-blue-800 font-bold rounded-md hover:bg-yellow-300 transition-colors"
-                onClick={() => setIsVisible(false)}
-                data-testid="button-ad-cta"
-              >
-                닫기
-              </button>
             </div>
           </motion.div>
         </motion.div>
