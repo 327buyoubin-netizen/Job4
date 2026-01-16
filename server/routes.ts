@@ -50,6 +50,7 @@ export async function registerRoutes(
             await storage.createJobPosting({
               company: parsed.company,
               title: parsed.title,
+              positions: parsed.positions,
               startDate: parsed.startDate,
               endDate: parsed.endDate,
               url,
@@ -65,6 +66,7 @@ export async function registerRoutes(
           await storage.createJobPosting({
             company: parsed.company,
             title: parsed.title,
+            positions: parsed.positions,
             startDate: parsed.startDate,
             endDate: parsed.endDate,
             url: "manual-input",
@@ -95,6 +97,7 @@ export async function registerRoutes(
       {
         company: "네이버",
         title: "2026 신입 개발자 공개채용",
+        positions: ["프론트엔드 개발", "백엔드 개발", "AI/ML", "데이터 분석", "PM/기획"],
         startDate: "2026-01-10",
         endDate: "2026-01-31",
         url: "https://recruit.navercorp.com",
@@ -102,6 +105,7 @@ export async function registerRoutes(
       {
         company: "카카오",
         title: "2026 상반기 경력 개발자 모집",
+        positions: ["백엔드 개발", "iOS 개발", "Android 개발", "DevOps/인프라"],
         startDate: "2026-01-15",
         endDate: "2026-02-15",
         url: "https://careers.kakao.com",
@@ -109,6 +113,7 @@ export async function registerRoutes(
       {
         company: "삼성전자",
         title: "2026년 상반기 신입사원 모집",
+        positions: ["마케팅", "영업/세일즈", "인사/HR", "재무/회계", "QA/테스트"],
         startDate: "2026-01-20",
         endDate: "2026-02-28",
         url: "https://www.samsung.com/sec/careers/",

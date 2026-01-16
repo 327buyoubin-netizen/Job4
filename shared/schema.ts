@@ -4,6 +4,7 @@ export const jobPostingSchema = z.object({
   id: z.string(),
   company: z.string(),
   title: z.string(),
+  positions: z.array(z.string()).default([]),
   startDate: z.string().nullable(),
   endDate: z.string().nullable(),
   url: z.string(),

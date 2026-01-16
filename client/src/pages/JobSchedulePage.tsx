@@ -23,14 +23,15 @@ interface JobCategory {
 
 function analyzeJobCategories(postings: JobPosting[]): JobCategory[] {
   const categoryDefs: { name: string; keywords: string[] }[] = [
-    { name: "개발/IT", keywords: ["개발", "developer", "engineer", "프론트엔드", "백엔드", "풀스택", "소프트웨어", "IT", "프로그래머", "SW"] },
+    { name: "개발/IT", keywords: ["개발", "developer", "engineer", "프론트엔드", "백엔드", "풀스택", "소프트웨어", "IT", "프로그래머", "SW", "ios", "android", "모바일", "devops", "인프라", "sre"] },
     { name: "마케팅", keywords: ["마케팅", "marketing", "광고", "브랜드", "SNS", "콘텐츠", "홍보", "PR"] },
     { name: "디자인", keywords: ["디자인", "design", "UI", "UX", "그래픽", "웹디자인", "영상"] },
     { name: "기획/PM", keywords: ["기획", "PM", "프로젝트", "매니저", "product", "서비스기획", "전략"] },
-    { name: "데이터/AI", keywords: ["데이터", "data", "AI", "머신러닝", "분석", "analyst", "scientist"] },
+    { name: "데이터/AI", keywords: ["데이터", "data", "AI", "머신러닝", "분석", "analyst", "scientist", "ML"] },
     { name: "영업/세일즈", keywords: ["영업", "세일즈", "sales", "B2B", "B2C", "어카운트"] },
     { name: "인사/HR", keywords: ["인사", "HR", "채용", "인재", "조직문화", "교육"] },
     { name: "재무/회계", keywords: ["재무", "회계", "finance", "경리", "세무", "감사"] },
+    { name: "QA/테스트", keywords: ["QA", "테스트", "품질", "테스터"] },
     { name: "기타", keywords: [] },
   ];
 
@@ -42,29 +43,35 @@ function analyzeJobCategories(postings: JobPosting[]): JobCategory[] {
   }));
 
   for (const posting of postings) {
-    const text = `${posting.title} ${posting.company}`.toLowerCase();
-    let matched = false;
+    const positions = posting.positions && posting.positions.length > 0 
+      ? posting.positions 
+      : [posting.title];
 
-    for (const category of results) {
-      if (category.name === "기타") continue;
-      for (const keyword of category.keywords) {
-        if (text.includes(keyword.toLowerCase())) {
-          category.count++;
-          if (!category.companies.includes(posting.company)) {
-            category.companies.push(posting.company);
+    for (const position of positions) {
+      const text = position.toLowerCase();
+      let matched = false;
+
+      for (const category of results) {
+        if (category.name === "기타") continue;
+        for (const keyword of category.keywords) {
+          if (text.includes(keyword.toLowerCase())) {
+            category.count++;
+            if (!category.companies.includes(posting.company)) {
+              category.companies.push(posting.company);
+            }
+            matched = true;
+            break;
           }
-          matched = true;
-          break;
         }
+        if (matched) break;
       }
-      if (matched) break;
-    }
 
-    if (!matched) {
-      const etcCategory = results.find((c) => c.name === "기타")!;
-      etcCategory.count++;
-      if (!etcCategory.companies.includes(posting.company)) {
-        etcCategory.companies.push(posting.company);
+      if (!matched) {
+        const etcCategory = results.find((c) => c.name === "기타")!;
+        etcCategory.count++;
+        if (!etcCategory.companies.includes(posting.company)) {
+          etcCategory.companies.push(posting.company);
+        }
       }
     }
   }

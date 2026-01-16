@@ -1,6 +1,7 @@
 export interface ParsedJobInfo {
   company: string;
   title: string;
+  positions: string[];
   startDate: string | null;
   endDate: string | null;
 }
@@ -110,7 +111,97 @@ export function parseJobContent(content: string, url?: string): ParsedJobInfo {
     }
   }
 
-  return { company, title, startDate, endDate };
+  const positions = extractPositions(content);
+
+  return { company, title, positions, startDate, endDate };
+}
+
+function extractPositions(content: string): string[] {
+  const positionKeywords = [
+    "프론트엔드", "백엔드", "풀스택", "개발자", "엔지니어", "developer", "engineer",
+    "PM", "프로덕트 매니저", "프로젝트 매니저", "기획자", "서비스 기획",
+    "디자이너", "UI", "UX", "그래픽",
+    "마케터", "마케팅", "콘텐츠", "광고", "브랜드",
+    "데이터", "분석가", "analyst", "scientist", "AI", "ML", "머신러닝",
+    "영업", "세일즈", "sales", "어카운트",
+    "인사", "HR", "채용 담당", "교육",
+    "재무", "회계", "경리",
+    "QA", "테스터", "품질",
+    "DevOps", "인프라", "클라우드", "SRE",
+    "보안", "security",
+    "iOS", "Android", "모바일", "앱 개발",
+  ];
+
+  const foundPositions: string[] = [];
+  const lowerContent = content.toLowerCase();
+
+  for (const keyword of positionKeywords) {
+    if (lowerContent.includes(keyword.toLowerCase())) {
+      const normalizedKeyword = normalizePosition(keyword);
+      if (!foundPositions.includes(normalizedKeyword)) {
+        foundPositions.push(normalizedKeyword);
+      }
+    }
+  }
+
+  return foundPositions.slice(0, 20);
+}
+
+function normalizePosition(keyword: string): string {
+  const mapping: Record<string, string> = {
+    "프론트엔드": "프론트엔드 개발",
+    "백엔드": "백엔드 개발",
+    "풀스택": "풀스택 개발",
+    "developer": "개발",
+    "engineer": "엔지니어",
+    "PM": "PM/기획",
+    "프로덕트 매니저": "PM/기획",
+    "프로젝트 매니저": "PM/기획",
+    "기획자": "PM/기획",
+    "서비스 기획": "PM/기획",
+    "디자이너": "디자인",
+    "UI": "UI/UX 디자인",
+    "UX": "UI/UX 디자인",
+    "그래픽": "그래픽 디자인",
+    "마케터": "마케팅",
+    "마케팅": "마케팅",
+    "콘텐츠": "콘텐츠 마케팅",
+    "광고": "광고/마케팅",
+    "브랜드": "브랜드 마케팅",
+    "데이터": "데이터 분석",
+    "분석가": "데이터 분석",
+    "analyst": "데이터 분석",
+    "scientist": "데이터 사이언스",
+    "AI": "AI/ML",
+    "ML": "AI/ML",
+    "머신러닝": "AI/ML",
+    "영업": "영업/세일즈",
+    "세일즈": "영업/세일즈",
+    "sales": "영업/세일즈",
+    "어카운트": "어카운트 매니저",
+    "인사": "인사/HR",
+    "HR": "인사/HR",
+    "채용 담당": "인사/HR",
+    "교육": "교육/HRD",
+    "재무": "재무/회계",
+    "회계": "재무/회계",
+    "경리": "재무/회계",
+    "QA": "QA/테스트",
+    "테스터": "QA/테스트",
+    "품질": "QA/테스트",
+    "DevOps": "DevOps/인프라",
+    "인프라": "DevOps/인프라",
+    "클라우드": "클라우드",
+    "SRE": "SRE",
+    "보안": "보안",
+    "security": "보안",
+    "iOS": "iOS 개발",
+    "Android": "Android 개발",
+    "모바일": "모바일 개발",
+    "앱 개발": "모바일 개발",
+  };
+
+  return mapping[keyword] || keyword;
 }
 
 export function extractSkillsFromExperience(
