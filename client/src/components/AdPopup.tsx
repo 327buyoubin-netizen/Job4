@@ -66,11 +66,11 @@ export function AdPopup({ delay = 5000 }: AdPopupProps) {
                 <span className="text-3xl text-yellow-300 font-bold">32,000원</span>
               </div>
 
-              <div className="space-y-2">
-                <p className="text-xl text-red-400 font-bold">
+              <div className="bg-white rounded-md p-4 space-y-2">
+                <p className="text-xl text-red-500 font-bold">
                   수익모델 겸 재미로 만든 광고입니다
                 </p>
-                <p className="text-xl text-red-400 font-bold">
+                <p className="text-xl text-red-500 font-bold">
                   한양대 빠이팅 즐거운 겨울방학 보내세요~
                 </p>
               </div>
