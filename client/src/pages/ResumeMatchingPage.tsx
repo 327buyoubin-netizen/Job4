@@ -129,8 +129,8 @@ export default function ResumeMatchingPage() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 h-full">
-      <div className="lg:w-[420px] flex-shrink-0 space-y-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+      <div className="space-y-4">
         <ExperienceForm
           onSubmit={addExperienceMutation.mutate}
           isLoading={addExperienceMutation.isPending}
@@ -177,7 +177,7 @@ export default function ResumeMatchingPage() {
         </Card>
       </div>
 
-      <div className="flex-1 space-y-4 min-w-0">
+      <div className="space-y-4">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
@@ -246,9 +246,27 @@ export default function ResumeMatchingPage() {
                 </div>
               </CardContent>
             </Card>
-
-            {draft && <DraftPreview draft={draft} question={question} />}
           </>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        {draft ? (
+          <DraftPreview draft={draft} question={question} />
+        ) : (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">자소서 초안</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8 text-muted-foreground">
+                <Sparkles className="h-10 w-10 mx-auto mb-3 opacity-50" />
+                <p className="text-sm">자소서 문항을 입력하고</p>
+                <p className="text-sm">"자동 매칭"을 클릭하면</p>
+                <p className="text-sm">초안이 생성됩니다</p>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>
