@@ -136,6 +136,48 @@ export default function ResumeMatchingPage() {
           isLoading={addExperienceMutation.isPending}
         />
 
+        <Button
+          variant="outline"
+          onClick={() => loadSampleMutation.mutate()}
+          disabled={loadSampleMutation.isPending}
+          className="w-full"
+          data-testid="button-load-sample-experiences"
+        >
+          <Database className="h-4 w-4 mr-1" />
+          샘플 경험 로드
+        </Button>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">저장된 경험 ({experiences.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-primary" />
+              </div>
+            ) : experiences.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground" data-testid="empty-experiences">
+                <p className="mb-1">저장된 경험이 없습니다</p>
+                <p className="text-sm">위 폼에서 경험을 추가하거나</p>
+                <p className="text-sm">샘플 데이터를 로드하세요</p>
+              </div>
+            ) : (
+              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
+                {experiences.map((exp) => (
+                  <ExperienceCard
+                    key={exp.id}
+                    experience={exp}
+                    onDelete={(id) => deleteMutation.mutate(id)}
+                  />
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="flex-1 space-y-4 min-w-0">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
@@ -173,51 +215,9 @@ export default function ResumeMatchingPage() {
                 </>
               )}
             </Button>
-
-            <Button
-              variant="outline"
-              onClick={() => loadSampleMutation.mutate()}
-              disabled={loadSampleMutation.isPending}
-              className="w-full"
-              data-testid="button-load-sample-experiences"
-            >
-              <Database className="h-4 w-4 mr-1" />
-              샘플 경험 로드
-            </Button>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">저장된 경험 ({experiences.length})</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-primary" />
-              </div>
-            ) : experiences.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground" data-testid="empty-experiences">
-                <p className="mb-1">저장된 경험이 없습니다</p>
-                <p className="text-sm">위 폼에서 경험을 추가하거나</p>
-                <p className="text-sm">샘플 데이터를 로드하세요</p>
-              </div>
-            ) : (
-              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
-                {experiences.map((exp) => (
-                  <ExperienceCard
-                    key={exp.id}
-                    experience={exp}
-                    onDelete={(id) => deleteMutation.mutate(id)}
-                  />
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="flex-1 space-y-4 min-w-0">
         {matchResults.length > 0 && (
           <>
             <Card>
@@ -249,19 +249,6 @@ export default function ResumeMatchingPage() {
 
             {draft && <DraftPreview draft={draft} question={question} />}
           </>
-        )}
-
-        {matchResults.length === 0 && (
-          <Card className="flex-1">
-            <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-              <Sparkles className="h-12 w-12 text-muted-foreground/50 mb-4" />
-              <h3 className="text-lg font-medium mb-2">매칭 결과가 여기에 표시됩니다</h3>
-              <p className="text-muted-foreground max-w-md">
-                자소서 문항을 입력하고 "자동 매칭" 버튼을 클릭하면
-                저장된 경험 중 가장 적합한 Top 3를 찾아 점수와 함께 보여드립니다.
-              </p>
-            </CardContent>
-          </Card>
         )}
       </div>
     </div>
