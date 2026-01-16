@@ -337,7 +337,7 @@ END:VCALENDAR`;
               <BarChart3 className="h-5 w-5 text-primary" />
               공고 분석
             </CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-foreground mt-1">
               지원한 직무를 분석하여 관심 분야를 파악합니다
             </p>
           </CardHeader>
